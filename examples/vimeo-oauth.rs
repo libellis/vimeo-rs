@@ -1,6 +1,3 @@
-#[macro_use]
-extern crate oauth2;
-
 use oauth2::basic::BasicClient;
 
 // Alternatively, this can be `oauth2::curl::http_client` or a custom client.
