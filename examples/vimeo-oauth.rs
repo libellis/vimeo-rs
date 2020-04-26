@@ -16,10 +16,7 @@ use oauth2::basic::BasicClient;
 
 // Alternatively, this can be `oauth2::curl::http_client` or a custom client.
 use oauth2::reqwest::http_client;
-use oauth2::{
-    AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope,
-    TokenResponse, TokenUrl,
-};
+use oauth2::{AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenResponse, TokenUrl, EmptyExtraTokenFields};
 use std::env;
 use std::io::{BufRead, BufReader, Write};
 use std::net::TcpListener;
@@ -119,9 +116,9 @@ fn main() {
             // Exchange the code with a token.
             let token_res= client.exchange_code(code).request(http_client);
 
-            println!("Vimeo returned the following token:\n{:?}\n", token_res);
+            println!("Vimeo returned the following token response:\n{:?}\n", token_res);
 
-            if let Ok(token) = token_res {
+            if let Ok(mut token) = token_res {
                 let scopes = if let Some(scopes_vec) = token.scopes() {
                     scopes_vec
                         .iter()
@@ -131,8 +128,12 @@ fn main() {
                 } else {
                     Vec::new()
                 };
+
                 println!("Vimeo returned the following scopes:\n{:?}\n", scopes);
+                println!("Vimeo returned the following token:\n{:?}\n", token.access_token());
+                env::set_var("VIMEO_ACCESS_TOKEN", token.access_token())
             }
+
 
             // The server will terminate itself after collecting the first code.
             break;
