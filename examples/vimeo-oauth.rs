@@ -1,3 +1,17 @@
+//!
+//! This example showcases the Vimeo OAuth2 process for requesting access to the user's private assets.
+//!
+//! Before running it, you'll need to generate your own Vimeo OAuth2 credentials.
+//!
+//! In order to run the example call:
+//!
+//! ```sh
+//! VIMEO_CLIENT_ID=xxx VIMEO_CLIENT_SECRET=yyy cargo run --example github
+//! ```
+//!
+//! ...and follow the instructions.
+//!
+
 use oauth2::basic::BasicClient;
 
 // Alternatively, this can be `oauth2::curl::http_client` or a custom client.
