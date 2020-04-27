@@ -52,7 +52,7 @@ struct VideoList {
 pub struct Video {
     uri: String,
     name: String,
-    description: String,
+    description: Option<String>,
     link: String,
     duration: i32,
     width: i32,
@@ -65,18 +65,18 @@ pub struct Video {
     modified_time: String,
     release_time: String,
     content_rating: Vec<String>,
-    license: String,
+    license: Option<String>,
     privacy: Privacy,
     pictures: Pictures,
     tags: Vec<Tag>,
     stats: Stats,
     categories: Vec<Category>,
     user: User,
-    files: File,
+    files: Option<Vec<File>>,
     // app: App,
     status: String,
     resource_key: String,
-    embed_presets: EmbedPresets,
+    embed_presets: Option<EmbedPresets>,
     upload: Upload,
     transcode: Transcode,
 }
@@ -145,7 +145,7 @@ pub struct EmbedPresets {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EmbedSettings {
     buttons: Option<Buttons>,
-    logos: Option<Logos>,
+    logos: Logos,
     outro: String,
     portrait: String,
     title: String,
@@ -182,19 +182,19 @@ pub struct Buttons {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Logos {
     vimeo:         bool,
-    custom:        bool,
-    sticky_custom: bool,
+    // TODO: Looking at the response, this is an object not a bool.
+    // custom:        bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Upload {
     status: String,
-    upload_link: String,
-    redirect_url: String,
-    link: String,
-    form: String,
-    approach: String,
-    size: u32,
+    upload_link: Option<String>,
+    redirect_url: Option<String>,
+    link: Option<String>,
+    form: Option<String>,
+    approach: Option<String>,
+    size: Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -206,12 +206,14 @@ pub struct Transcode {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Privacy {
     view: String,
-    join: String,
-    videos: String,
-    comment: String,
-    forums: String,
-    invite: String,
+    comments: String,
     embed: String,
     download: bool,
     add: bool,
+
+    // TODO: In my testing so far these don't exist. Maybe remove entirely?
+    join: Option<String>,
+    videos: Option<String>,
+    forums: Option<String>,
+    invite: Option<String>,
 }

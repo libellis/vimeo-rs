@@ -153,4 +153,7 @@ fn main() {
 
     let user = rt.block_on(vimeo.users().get(None)).unwrap();
     println!("User from /me endpoint:\n{:?}\n", user);
+
+    let videos = rt.block_on(vimeo.videos().list(None)).unwrap();
+    println!("Videos from /me endpoint:\n{:?}\n", videos);
 }
