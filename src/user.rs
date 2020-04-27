@@ -1,20 +1,21 @@
 use serde::{Serialize, Deserialize};
 use crate::{Client, Service};
 use reqwest::Method;
+use std::rc::Rc;
 
-pub struct UsersService {
+pub struct UserService {
     client: Client
 }
 
-impl Service<User> for UsersService {
+impl Service<User> for UserService {
     fn client(&self) -> &Client {
         &self.client
     }
 }
 
-impl UsersService {
-    pub fn new(client: Client) -> UsersService {
-        UsersService {
+impl UserService {
+    pub fn new(client: Client) -> UserService {
+        UserService {
             client
         }
     }
