@@ -1,7 +1,6 @@
 use serde::{Serialize, Deserialize};
 use crate::{Client, Service};
 use reqwest::Method;
-use std::rc::Rc;
 
 pub struct UserService {
     client: Client
