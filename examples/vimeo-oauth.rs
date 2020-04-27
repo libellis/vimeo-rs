@@ -6,7 +6,7 @@
 //! In order to run the example call:
 //!
 //! ```sh
-//! VIMEO_CLIENT_ID=xxx VIMEO_CLIENT_SECRET=yyy cargo run --example github
+//! VIMEO_CLIENT_ID=xxx VIMEO_CLIENT_SECRET=yyy cargo run --example vimeo-oauth
 //! ```
 //!
 //! ...and follow the instructions.
@@ -21,6 +21,9 @@ use std::env;
 use std::io::{BufRead, BufReader, Write};
 use std::net::TcpListener;
 use url::Url;
+use tokio::runtime::Runtime;
+
+use vimeo_rs::{Client, UsersService};
 
 fn main() {
     let vimeo_client_id = ClientId::new(
@@ -130,8 +133,8 @@ fn main() {
                 };
 
                 println!("Vimeo returned the following scopes:\n{:?}\n", scopes);
-                println!("Vimeo returned the following token:\n{:?}\n", token.access_token());
-                env::set_var("VIMEO_ACCESS_TOKEN", token.access_token())
+                println!("Vimeo returned the following token:\n{:?}\n", token.access_token().secret());
+                env::set_var("VIMEO_ACCESS_TOKEN", token.access_token().secret())
             }
 
 
@@ -139,4 +142,17 @@ fn main() {
             break;
         }
     }
+
+    let access_token = env::var("VIMEO_ACCESS_TOKEN").unwrap();
+
+    let client = Client::new(&access_token);
+
+    let user_service = UsersService::new(client);
+
+    // spawn a tokio runtime - easy for testing purposes to do it manually here.
+    let mut rt = Runtime::new()
+        .unwrap();
+
+    let user = rt.block_on(user_service.get(None)).unwrap();
+    println!("User from /me endpoint:\n{:?}\n", user);
 }
