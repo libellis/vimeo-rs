@@ -5,7 +5,7 @@ use crate::{Client, UserService, VideoService};
 pub struct VimeoServices {
     client: Client,
 
-    users: UserService,
+    users:  UserService,
     videos: VideoService,
 }
 

@@ -16,18 +16,21 @@ use oauth2::basic::BasicClient;
 
 // Alternatively, this can be `oauth2::curl::http_client` or a custom client.
 use oauth2::reqwest::http_client;
-use oauth2::{AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenResponse, TokenUrl, EmptyExtraTokenFields};
+use oauth2::{
+    AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields,
+    RedirectUrl, Scope, TokenResponse, TokenUrl,
+};
 use std::env;
 use std::io::{BufRead, BufReader, Write};
 use std::net::TcpListener;
-use url::Url;
 use tokio::runtime::Runtime;
+use url::Url;
 
 use vimeo_rs::{Client, UserService, VimeoServices};
 
 fn main() {
     let vimeo_client_id = ClientId::new(
-        env::var("VIMEO_CLIENT_ID").expect("Missing the VIMEO_CLIENT_ID environment variable.")
+        env::var("VIMEO_CLIENT_ID").expect("Missing the VIMEO_CLIENT_ID environment variable."),
     );
 
     let vimeo_client_secret = ClientSecret::new(
@@ -45,7 +48,8 @@ fn main() {
         Some(vimeo_client_secret),
         auth_url,
         Some(token_url),
-    ).set_redirect_url(
+    )
+    .set_redirect_url(
         RedirectUrl::new("http://localhost:8080".to_string()).expect("Invalid redirect URL"),
     );
 
@@ -117,9 +121,12 @@ fn main() {
             // TODO: Error out here if states don't match.
 
             // Exchange the code with a token.
-            let token_res= client.exchange_code(code).request(http_client);
+            let token_res = client.exchange_code(code).request(http_client);
 
-            println!("Vimeo returned the following token response:\n{:?}\n", token_res);
+            println!(
+                "Vimeo returned the following token response:\n{:?}\n",
+                token_res
+            );
 
             if let Ok(mut token) = token_res {
                 let scopes = if let Some(scopes_vec) = token.scopes() {
@@ -133,10 +140,12 @@ fn main() {
                 };
 
                 println!("Vimeo returned the following scopes:\n{:?}\n", scopes);
-                println!("Vimeo returned the following token:\n{:?}\n", token.access_token().secret());
+                println!(
+                    "Vimeo returned the following token:\n{:?}\n",
+                    token.access_token().secret()
+                );
                 env::set_var("VIMEO_ACCESS_TOKEN", token.access_token().secret())
             }
-
 
             // The server will terminate itself after collecting the first code.
             break;
@@ -148,8 +157,7 @@ fn main() {
     let vimeo = VimeoServices::new(access_token);
 
     // spawn a tokio runtime - easy for testing purposes to do it manually here.
-    let mut rt = Runtime::new()
-        .unwrap();
+    let mut rt = Runtime::new().unwrap();
 
     let user = rt.block_on(vimeo.users().get(None)).unwrap();
     println!("User from /me endpoint:\n{:?}\n", user);

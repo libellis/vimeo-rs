@@ -13,7 +13,7 @@ const HEADER_RATE_RESET: &'static str = "X-RateLimit-Reset";
 // default headers attached for all future requests related to interfacing with Vimeo's API.
 pub struct Client {
     http_client: reqwest::Client,
-    base_url: &'static str,
+    base_url:    &'static str,
 }
 
 impl Client {
@@ -30,8 +30,14 @@ impl Client {
     pub fn new(access_token: &str) -> Client {
         let mut headers = header::HeaderMap::new();
         let header_value = format!("Bearer {}", access_token);
-        headers.insert(header::AUTHORIZATION, header::HeaderValue::from_str(&header_value).unwrap());
-        headers.insert(header::ACCEPT, header::HeaderValue::from_str(MEDIA_TYPE_VERSION).unwrap());
+        headers.insert(
+            header::AUTHORIZATION,
+            header::HeaderValue::from_str(&header_value).unwrap(),
+        );
+        headers.insert(
+            header::ACCEPT,
+            header::HeaderValue::from_str(MEDIA_TYPE_VERSION).unwrap(),
+        );
 
         let http_client = ClientBuilder::new()
             .default_headers(headers)
@@ -59,7 +65,7 @@ impl Clone for Client {
         Client {
             // This is cheap to clone because under the hood it's just an Arc<ClientRef>
             http_client: self.http_client.clone(),
-            base_url: self.base_url,
+            base_url:    self.base_url,
         }
     }
 }

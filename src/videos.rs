@@ -1,13 +1,13 @@
-use serde::{Serialize, Deserialize};
-use crate::{Client, Service, Pictures, User};
+use crate::{Client, Pictures, Service, User};
 use reqwest::Method;
+use serde::{Deserialize, Serialize};
 
 /// VideosService handles communication with the videos related
 /// methods of the Vimeo API.
 ///
 /// Vimeo API docs: https://developer.vimeo.com/api/reference/videos
 pub struct VideoService {
-    client: Client
+    client: Client,
 }
 
 impl Service<Video> for VideoService {
@@ -18,9 +18,7 @@ impl Service<Video> for VideoService {
 
 impl VideoService {
     pub fn new(client: Client) -> VideoService {
-        VideoService {
-            client
-        }
+        VideoService { client }
     }
 
     // List will either list all the videos of the user id supplied, or if None is supplied will list all
@@ -32,7 +30,8 @@ impl VideoService {
             "me/videos".to_string()
         };
 
-        let videos: VideoList = self.request_builder(Method::GET, u, None)
+        let videos: VideoList = self
+            .request_builder(Method::GET, u, None)
             .send()
             .await?
             .json::<VideoList>()
@@ -50,51 +49,51 @@ struct VideoList {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Video {
-    uri: String,
-    name: String,
-    description: Option<String>,
-    link: String,
-    duration: i32,
-    width: i32,
-    height: i32,
-    language: String,
+    uri:            String,
+    name:           String,
+    description:    Option<String>,
+    link:           String,
+    duration:       i32,
+    width:          i32,
+    height:         i32,
+    language:       String,
     // TODO: Add this in once type is made.
     // embed: Embed,
     // TODO: Switch these to a Time type.
-    created_time: String,
-    modified_time: String,
-    release_time: String,
+    created_time:   String,
+    modified_time:  String,
+    release_time:   String,
     content_rating: Vec<String>,
-    license: Option<String>,
-    privacy: Privacy,
-    pictures: Pictures,
-    tags: Vec<Tag>,
-    stats: Stats,
-    categories: Vec<Category>,
-    user: User,
-    files: Option<Vec<File>>,
+    license:        Option<String>,
+    privacy:        Privacy,
+    pictures:       Pictures,
+    tags:           Vec<Tag>,
+    stats:          Stats,
+    categories:     Vec<Category>,
+    user:           User,
+    files:          Option<Vec<File>>,
     // app: App,
-    status: String,
-    resource_key: String,
-    embed_presets: Option<EmbedPresets>,
-    upload: Upload,
-    transcode: Transcode,
+    status:         String,
+    resource_key:   String,
+    embed_presets:  Option<EmbedPresets>,
+    upload:         Upload,
+    transcode:      Transcode,
 }
 
 // File internal object provides access to video file information
 #[derive(Serialize, Deserialize, Debug)]
 pub struct File {
-    quality: String,
+    quality:      String,
     #[serde(rename = "type")]
-    ty: String,
-    width: i32,
-    height: i32,
-    link: String,
+    ty:           String,
+    width:        i32,
+    height:       i32,
+    link:         String,
     // TODO: Convert to Time type.
     created_time: String,
-    fps: f32,
-    size: i32,
-    md5: String,
+    fps:          f32,
+    size:         i32,
+    md5:          String,
 }
 
 // Stats internal object provides access to video statistic.
@@ -106,65 +105,65 @@ pub struct Stats {
 // Category represents a category.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Category {
-    uri: String,
-    link: String,
-    name: String,
-    top_level: bool,
-    pictures: Pictures,
+    uri:                      String,
+    link:                     String,
+    name:                     String,
+    top_level:                bool,
+    pictures:                 Pictures,
     last_video_featured_time: String,
-    parent: SubCategory,
-    subcategories: Vec<SubCategory>,
-    resource_key: String,
+    parent:                   SubCategory,
+    subcategories:            Vec<SubCategory>,
+    resource_key:             String,
 }
 
 // SubCategory internal object provides access to subcategory in category.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SubCategory {
-    uri: String,
+    uri:  String,
     name: String,
     link: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Tag {
-    uri: String,
-    name: String,
-    tag: String,
-    canonical: String,
+    uri:          String,
+    name:         String,
+    tag:          String,
+    canonical:    String,
     resource_key: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EmbedPresets {
-    uri: String,
-    name: String,
+    uri:      String,
+    name:     String,
     settings: EmbedSettings,
-    user: Option<User>,
+    user:     Option<User>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EmbedSettings {
-    buttons: Option<Buttons>,
-    logos: Logos,
-    outro: String,
-    portrait: String,
-    title: String,
-    byline: String,
-    badge: bool,
-    byline_badge: bool,
-    collections_button: bool,
-    playbar: bool,
-    volume: bool,
-    fullscreen_button: bool,
-    scaling_button: bool,
-    autoplay: bool,
-    autopause: bool,
+    buttons:                            Option<Buttons>,
+    logos:                              Logos,
+    outro:                              String,
+    portrait:                           String,
+    title:                              String,
+    byline:                             String,
+    badge:                              bool,
+    byline_badge:                       bool,
+    collections_button:                 bool,
+    playbar:                            bool,
+    volume:                             bool,
+    fullscreen_button:                  bool,
+    scaling_button:                     bool,
+    autoplay:                           bool,
+    autopause:                          bool,
     #[serde(rename = "loop")]
-    looping: bool,
-    color: String,
-    link: bool,
-    overlay_email_capture: i32,
-    overlay_email_capture_text: String,
+    looping:                            bool,
+    color:                              String,
+    link:                               bool,
+    overlay_email_capture:              i32,
+    overlay_email_capture_text:         String,
     overlay_email_capture_confirmation: String,
 }
 
@@ -181,20 +180,20 @@ pub struct Buttons {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Logos {
-    vimeo:         bool,
+    vimeo: bool,
     // TODO: Looking at the response, this is an object not a bool.
     // custom:        bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Upload {
-    status: String,
-    upload_link: Option<String>,
+    status:       String,
+    upload_link:  Option<String>,
     redirect_url: Option<String>,
-    link: Option<String>,
-    form: Option<String>,
-    approach: Option<String>,
-    size: Option<u32>,
+    link:         Option<String>,
+    form:         Option<String>,
+    approach:     Option<String>,
+    size:         Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -205,14 +204,14 @@ pub struct Transcode {
 // TODO: Probably move this to some kind of common file once we expand this client lib.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Privacy {
-    view: String,
+    view:     String,
     comments: String,
-    embed: String,
+    embed:    String,
     download: bool,
-    add: bool,
+    add:      bool,
 
     // TODO: In my testing so far these don't exist. Maybe remove entirely?
-    join: Option<String>,
+    join:   Option<String>,
     videos: Option<String>,
     forums: Option<String>,
     invite: Option<String>,

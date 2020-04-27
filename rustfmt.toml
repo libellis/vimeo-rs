@@ -1,0 +1,3 @@
+indent_style = "Block"
+enum_discrim_align_threshold = 256
+struct_field_align_threshold = 256
