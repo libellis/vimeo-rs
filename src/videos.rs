@@ -56,9 +56,9 @@ pub struct Video {
     duration:       i32,
     width:          i32,
     height:         i32,
-    language:       String,
-    // TODO: Add this in once type is made.
-    // embed: Embed,
+    // TODO: Convert to enum of selectable languages.
+    language:       Option<String>,
+    embed: Embed,
     // TODO: Switch these to a Time type.
     created_time:   String,
     modified_time:  String,
@@ -72,7 +72,7 @@ pub struct Video {
     categories:     Vec<Category>,
     user:           User,
     files:          Option<Vec<File>>,
-    // app: App,
+    app: App,
     status:         String,
     resource_key:   String,
     embed_presets:  Option<EmbedPresets>,
@@ -199,6 +199,19 @@ pub struct Upload {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Transcode {
     status: String,
+}
+
+// Embed internal object provides access to HTML embed code.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Embed {
+    html: String,
+}
+
+// App internal object provides access to a specific app.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct App {
+    uri: String,
+    name: String,
 }
 
 // TODO: Probably move this to some kind of common file once we expand this client lib.

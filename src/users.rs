@@ -55,7 +55,7 @@ pub struct User {
 // Pictures internal object provides access to pictures.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Pictures {
-    uri:          String,
+    uri:          Option<String>,
     active:       bool,
     #[serde(rename = "type")]
     ty:           String,
