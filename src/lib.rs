@@ -1,6 +1,3 @@
-pub mod client;
-pub use client::*;
-
 pub mod users;
 pub use users::*;
 

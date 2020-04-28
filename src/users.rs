@@ -1,20 +1,20 @@
-use crate::{Client, Service};
+use crate::{Service};
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
 
 pub struct UserService {
-    client: Client,
+    http_client: reqwest::Client,
 }
 
 impl Service<User> for UserService {
-    fn client(&self) -> &Client {
-        &self.client
+    fn client(&self) -> &reqwest::Client {
+        &self.http_client
     }
 }
 
 impl UserService {
-    pub fn new(client: Client) -> UserService {
-        UserService { client }
+    pub fn new(client: reqwest::Client) -> UserService {
+        UserService { http_client: client }
     }
 
     pub async fn get(&self, maybe_uid: Option<String>) -> Result<User, reqwest::Error> {

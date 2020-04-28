@@ -26,7 +26,7 @@ use std::net::TcpListener;
 use tokio::runtime::Runtime;
 use url::Url;
 
-use vimeo_rs::{Client, UserService, VimeoServices};
+use vimeo_rs::{Client, UserService, Client};
 
 fn main() {
     let vimeo_client_id = ClientId::new(
@@ -154,7 +154,7 @@ fn main() {
 
     let access_token = env::var("VIMEO_ACCESS_TOKEN").unwrap();
 
-    let vimeo = VimeoServices::new(access_token);
+    let vimeo = Client::new(access_token);
 
     // spawn a tokio runtime - easy for testing purposes to do it manually here.
     let mut rt = Runtime::new().unwrap();

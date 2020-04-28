@@ -1,4 +1,4 @@
-use crate::{Client, Pictures, Service, User};
+use crate::{Pictures, Service, User};
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
 
@@ -7,18 +7,18 @@ use serde::{Deserialize, Serialize};
 ///
 /// Vimeo API docs: https://developer.vimeo.com/api/reference/videos
 pub struct VideoService {
-    client: Client,
+    http_client: reqwest::Client,
 }
 
 impl Service<Video> for VideoService {
-    fn client(&self) -> &Client {
-        &self.client
+    fn client(&self) -> &reqwest::Client {
+        &self.http_client
     }
 }
 
 impl VideoService {
-    pub fn new(client: Client) -> VideoService {
-        VideoService { client }
+    pub fn new(client: reqwest::Client) -> VideoService {
+        VideoService { http_client: client }
     }
 
     // List will either list all the videos of the user id supplied, or if None is supplied will list all
@@ -58,7 +58,7 @@ pub struct Video {
     height:         i32,
     // TODO: Convert to enum of selectable languages.
     language:       Option<String>,
-    embed: Embed,
+    embed:          Embed,
     // TODO: Switch these to a Time type.
     created_time:   String,
     modified_time:  String,
@@ -72,7 +72,7 @@ pub struct Video {
     categories:     Vec<Category>,
     user:           User,
     files:          Option<Vec<File>>,
-    app: App,
+    app:            App,
     status:         String,
     resource_key:   String,
     embed_presets:  Option<EmbedPresets>,
