@@ -9,7 +9,7 @@ edition = "2018"
 # TODO: Fork oauth2 and fix dependency duplications. Use fork instead.
 
 [dependencies]
-oauth2 = { git = "https://github.com/PrismaPhonic/oauth2-rs.git", features = ["reqwest-010"], default-features = false }
+oauth2 = { version = "3.0.0-alpha.9", features = ["reqwest-010"], default-features = false }
 url = "2.1.1"
 reqwest = { version = "0.10", features = ["json"] }
 serde = { version = "1.0.106", features = ["derive"] }

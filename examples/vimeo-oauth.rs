@@ -26,7 +26,7 @@ use std::net::TcpListener;
 use tokio::runtime::Runtime;
 use url::Url;
 
-use vimeo_rs::{Client, UserService, Client};
+use vimeo_rs::{Client, UserService};
 
 fn main() {
     let vimeo_client_id = ClientId::new(
@@ -42,7 +42,7 @@ fn main() {
     let token_url = TokenUrl::new("https://api.vimeo.com/oauth/access_token".to_string())
         .expect("Invalid token endpoint URL");
 
-    // Set up the config for the Github OAuth2 process.
+    // Set up the config for the Vimeo OAuth2 process.
     let client = BasicClient::new(
         vimeo_client_id,
         Some(vimeo_client_secret),
